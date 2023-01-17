@@ -22,4 +22,4 @@ test:
 server:
 	go run main.go
 
-.PHONY: postgres createdb dropdb test server
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
