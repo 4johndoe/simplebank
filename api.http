@@ -1,0 +1,14 @@
+### Send POST request with json body
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+  "owner": "vasa",
+  "currency": "USD"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
