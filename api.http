@@ -32,3 +32,14 @@ client.test("Request executed successfully", function() {
   client.assert(response.status === 200, "Response status is not 200");
 });
 %}
+
+### Send POST request with json body
+POST http://localhost:8080/transfers
+Content-Type: application/json
+
+{
+  "from_account_id": 44,
+  "to_account_id": 43,
+  "amount": 10,
+  "currency": "CAD"
+}
