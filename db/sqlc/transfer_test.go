@@ -10,13 +10,24 @@ import (
 )
 
 func createRandomTransfer(t *testing.T) Transfer {
-	accountArgs := CreateAccountParams{
-		Owner:    util.RandomOwner(),
+	user1 := createRandomUser(t)
+
+	accountArgs1 := CreateAccountParams{
+		Owner:    user1.Username,
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
-	account1, _ := testQueries.CreateAccount(context.Background(), accountArgs)
-	account2, _ := testQueries.CreateAccount(context.Background(), accountArgs)
+
+	user2 := createRandomUser(t)
+
+	accountArgs2 := CreateAccountParams{
+		Owner:    user2.Username,
+		Balance:  util.RandomMoney(),
+		Currency: util.RandomCurrency(),
+	}
+
+	account1, _ := testQueries.CreateAccount(context.Background(), accountArgs1)
+	account2, _ := testQueries.CreateAccount(context.Background(), accountArgs2)
 
 	arg := CreateTransferParams{
 		FromAccountID: account1.ID,
