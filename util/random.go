@@ -46,3 +46,7 @@ func RandomCurrency() string {
 func RandomEmail() string {
 	return fmt.Sprintf("%s@%s.%s", RandomString(6), RandomString(1), RandomString(3))
 }
+
+func RandomTime() time.Time {
+	return time.Now()
+}
