@@ -43,3 +43,20 @@ Content-Type: application/json
   "amount": 10,
   "currency": "CAD"
 }
+
+### Send POST request with json body
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "vasa",
+  "password": "secret",
+  "full_name": "Vasiliy",
+  "email": "v@i.ua"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
