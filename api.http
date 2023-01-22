@@ -75,3 +75,17 @@ client.test("Request executed successfully", function() {
   client.assert(response.status === 200, "Response status is not 200");
 });
 %}
+
+### Send POST request with json body
+POST http://localhost:8080/tokens/renew_access
+Content-Type: application/json
+
+{
+  "refresh_token": "v2.local.wDImDQIDg0UIO1Z7r9I_iROX0-9U675fP9jRBNLDZGLsfduvtQ8niIDcU3YXK8GirZkL8lLI_B6MR1LPHQO85i-X2L6XIIdN6qEzlqcQuUzaUyyD9W_lqoauyDASOvulC8nEsDCjWbqJppaoIESpRv1l_xm1d-5mRc1F-d39UdOfaLvU3TpuxCQt9I_vUIpTycnYBLK6slbGQqgLR4Q6MUNQsvKV3PF1ipXtm1KlxkD3jMM8FFOhRPqLXLORJc5pxS_0piCX.bnVsbA"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
