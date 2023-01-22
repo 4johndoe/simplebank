@@ -19,8 +19,9 @@ func addAuthorization(
 	username string,
 	duration time.Duration,
 ) {
-	_token, err := tokenMaker.CreateToken(username, duration)
+	_token, payload, err := tokenMaker.CreateToken(username, duration)
 	require.NoError(t, err)
+	require.NotEmpty(t, payload)
 
 	authorizationHeader := fmt.Sprintf("%s %s", authorizationType, _token)
 	request.Header.Set(authrozationHeaderKey, authorizationHeader)
