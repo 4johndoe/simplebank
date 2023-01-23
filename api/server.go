@@ -10,6 +10,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// Server serves HTTP requests for bonking service.
 type Server struct {
 	config     util.Config
 	store      db.Store
@@ -17,6 +18,7 @@ type Server struct {
 	router     *gin.Engine
 }
 
+// NewServer creates a new HTTP server and set up routing.
 func NewServer(config util.Config, store db.Store) (*Server, error) {
 	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
 	if err != nil {
