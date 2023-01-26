@@ -79,6 +79,23 @@ client.test("Request executed successfully", function() {
 %}
 
 ### Send POST request with json body
+POST http://localhost:8080/v1/create_user
+Content-Type: application/json
+
+{
+  "username": "ivan??",
+  "password": "secret???",
+  "full_name": "12312",
+  "email": "ii.ua"
+}
+
+> {%
+client.test("Bad request", function() {
+  client.assert(response.status === 400, "Response status is not 200");
+});
+%}
+
+### Send POST request with json body
 POST http://localhost:8080/v1/login_user
 Content-Type: application/json
 
