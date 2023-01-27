@@ -10,14 +10,12 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (
-    username,
-    hashed_password,
-    full_name,
-    email
-) VALUES (
-    $1, $2, $3, $4
-) RETURNING username, hashed_password, full_name, email, password_changed_at, created_at
+INSERT INTO users (username,
+                   hashed_password,
+                   full_name,
+                   email)
+VALUES ($1, $2, $3, $4)
+RETURNING username, hashed_password, full_name, email, password_changed_at, created_at
 `
 
 type CreateUserParams struct {
@@ -47,12 +45,62 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 }
 
 const getUser = `-- name: GetUser :one
-SELECT username, hashed_password, full_name, email, password_changed_at, created_at FROM users
-WHERE username = $1 LIMIT 1
+SELECT username, hashed_password, full_name, email, password_changed_at, created_at
+FROM users
+WHERE username = $1
+LIMIT 1
 `
 
 func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
 	row := q.queryRow(ctx, q.getUserStmt, getUser, username)
+	var i User
+	err := row.Scan(
+		&i.Username,
+		&i.HashedPassword,
+		&i.FullName,
+		&i.Email,
+		&i.PasswordChangedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const updateUser = `-- name: UpdateUser :one
+UPDATE users
+SET hashed_password = CASE
+        WHEN $1::boolean = TRUE THEN $2
+        ELSE hashed_password
+    END,
+    full_name = CASE
+        WHEN $3::boolean = TRUE THEN full_name
+        ELSE full_name
+    END,
+    email = CASE
+        WHEN $4::boolean = TRUE THEN $5
+        ELSE email
+    END
+WHERE username = $6
+RETURNING username, hashed_password, full_name, email, password_changed_at, created_at
+`
+
+type UpdateUserParams struct {
+	SetHashedPassword bool   `json:"set_hashed_password"`
+	HashedPassword    string `json:"hashed_password"`
+	SetFullName       bool   `json:"set_full_name"`
+	SetEmail          bool   `json:"set_email"`
+	Email             string `json:"email"`
+	Username          string `json:"username"`
+}
+
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
+	row := q.queryRow(ctx, q.updateUserStmt, updateUser,
+		arg.SetHashedPassword,
+		arg.HashedPassword,
+		arg.SetFullName,
+		arg.SetEmail,
+		arg.Email,
+		arg.Username,
+	)
 	var i User
 	err := row.Scan(
 		&i.Username,
