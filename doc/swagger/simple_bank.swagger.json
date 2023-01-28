@@ -56,7 +56,7 @@
       }
     },
     "/v1/login_user": {
-      "patch": {
+      "post": {
         "summary": "Login user",
         "description": "Use this API to login user and get access|refresh token",
         "operationId": "SimpleBank_LoginUser",
