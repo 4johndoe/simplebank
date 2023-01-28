@@ -95,6 +95,21 @@ client.test("Bad request", function() {
 });
 %}
 
+### Send PATCH request with json body
+PATCH http://localhost:8080/v1/update_user
+Content-Type: application/json
+
+{
+  "username": "ivan",
+  "password": "11111111"
+}
+
+> {%
+client.test("Bad request", function() {
+  client.assert(response.status === 400, "Response status is not 200");
+});
+%}
+
 ### Send POST request with json body
 POST http://localhost:8080/v1/login_user
 Content-Type: application/json
